@@ -1,5 +1,6 @@
 # SecureAPI Analyzer - REST API Security Testing Tool
-n![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)
+
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)
 
 An automated security testing tool for REST APIs, focused on authentication, authorization, and OWASP Top 10 vulnerabilities. Built for penetration testers and security engineers who need fast, repeatable API security assessments.
 
