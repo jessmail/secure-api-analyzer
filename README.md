@@ -181,4 +181,4 @@ MIT License - see [LICENSE](LICENSE)
 
 ## Author
 
-**Jalal Essmail** - Security Engineering Student
+**J. Essmail** - Security Engineering Student

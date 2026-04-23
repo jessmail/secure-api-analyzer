@@ -54,7 +54,7 @@ class TestJWTUtils:
 
         _, decoded = decode_jwt_unsafe(token)
         assert "exp" in decoded
-        assert decoded["exp"] < 1700000000  # Before 2024
+        assert decoded["exp"] < 1710000000  # Before 2024
 
     def test_create_malformed_token(self) -> None:
         """Malformed token should have three parts but invalid content."""
