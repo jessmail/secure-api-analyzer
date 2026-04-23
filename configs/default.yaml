@@ -1,0 +1,48 @@
+# SecureAPI Analyzer - Default Configuration
+# Adjust these settings for your target API.
+
+scan:
+  timeout: 30                  # Request timeout in seconds
+  max_concurrent: 10           # Maximum concurrent HTTP connections
+  follow_redirects: false      # Follow HTTP redirects
+  verify_ssl: true             # Verify SSL certificates
+  user_agent: "SecureAPI-Analyzer/1.0"
+  delay_between_requests: 0.0  # Delay between requests (seconds)
+  # proxy: "http://127.0.0.1:8080"  # Optional HTTP proxy (e.g., Burp Suite)
+
+# Test suite configuration
+suites:
+  auth_bypass:
+    enabled: true
+    jwt_algorithms:
+      - "none"
+      - "HS256"
+      - "RS256"
+
+  broken_access:
+    enabled: true
+    user_a_id: "user_001"
+    user_b_id: "user_002"
+
+  rate_limiting:
+    enabled: true
+    burst_count: 50            # Number of requests in burst test
+    burst_window: 5.0          # Time window for burst (seconds)
+    lockout_attempts: 10       # Failed login attempts before lockout
+
+  input_validation:
+    enabled: true
+
+# Test user credentials
+# Replace with real tokens for your target API
+users:
+  - role: user
+    token: ""
+    user_id: "user_001"
+  - role: admin
+    token: ""
+    user_id: "admin_001"
+
+# Output settings
+output_dir: "results"
+payloads_path: "configs/owasp_payloads.yaml"

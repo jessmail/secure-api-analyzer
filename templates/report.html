@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SecureAPI Analyzer - Security Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            max-width: 1000px; margin: 0 auto; padding: 24px;
+            color: #1a1a2e; background: #fafbfc; line-height: 1.6;
+        }
+        h1 { color: #1e3a5f; border-bottom: 3px solid #1e3a5f; padding-bottom: 10px; margin-bottom: 8px; }
+        h2 { color: #2d5986; margin: 28px 0 14px; }
+        h3 { margin: 16px 0 8px; }
+        .meta { color: #555; font-size: 14px; margin: 4px 0; }
+        table { border-collapse: collapse; width: 100%; margin: 14px 0; }
+        th, td { border: 1px solid #d1d5db; padding: 10px 14px; text-align: left; }
+        th { background: #1e3a5f; color: #fff; font-weight: 600; }
+        tr:nth-child(even) { background: #f3f4f6; }
+        code { background: #e5e7eb; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+        .badge {
+            display: inline-block; padding: 3px 10px; border-radius: 4px;
+            color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase;
+        }
+        .badge-critical { background: #dc2626; }
+        .badge-high { background: #ea580c; }
+        .badge-medium { background: #ca8a04; }
+        .badge-low { background: #2563eb; }
+        .badge-info { background: #6b7280; }
+        .finding {
+            border-left: 4px solid #d1d5db; padding: 14px 18px; margin: 14px 0;
+            background: #fff; border-radius: 0 6px 6px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .finding-critical { border-left-color: #dc2626; }
+        .finding-high { border-left-color: #ea580c; }
+        .finding-medium { border-left-color: #ca8a04; }
+        .finding-low { border-left-color: #2563eb; }
+        .finding p { margin: 6px 0; font-size: 14px; }
+        .finding strong { color: #374151; }
+        footer { margin-top: 40px; padding: 16px 0; border-top: 1px solid #d1d5db; color: #9ca3af; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>SecureAPI Analyzer - Security Report</h1>
+    <p class="meta"><strong>Target:</strong> {{ target }}</p>
+    <p class="meta"><strong>Scan Date:</strong> {{ timestamp }}</p>
+    <p class="meta"><strong>Total Findings:</strong> {{ total_findings }}</p>
+
+    <h2>Severity Summary</h2>
+    <table>
+        <thead>
+            <tr><th>Severity</th><th>Count</th></tr>
+        </thead>
+        <tbody>
+            {% for severity, count in severity_counts.items() %}
+            <tr>
+                <td><span class="badge badge-{{ severity | lower }}">{{ severity }}</span></td>
+                <td>{{ count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Test Suite Results</h2>
+    <table>
+        <thead>
+            <tr><th>Suite</th><th>Endpoints Tested</th><th>Findings</th><th>Duration</th></tr>
+        </thead>
+        <tbody>
+            {% for suite in suites %}
+            <tr>
+                <td>{{ suite.name }}</td>
+                <td>{{ suite.endpoints_tested }}</td>
+                <td>{{ suite.findings_count }}</td>
+                <td>{{ suite.duration_seconds }}s</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Detailed Findings</h2>
+    {% for category, cat_findings in findings_by_category.items() %}
+    <h3>{{ category }}</h3>
+    {% for finding in cat_findings %}
+    <div class="finding finding-{{ finding.severity | lower }}">
+        <h3>
+            <span class="badge badge-{{ finding.severity | lower }}">{{ finding.severity }}</span>
+            {{ finding.title }}
+        </h3>
+        <p><strong>Endpoint:</strong> <code>{{ finding.method }} {{ finding.endpoint }}</code></p>
+        <p><strong>CVSS Score:</strong> {{ finding.cvss_score }}</p>
+        <p><strong>Description:</strong> {{ finding.description }}</p>
+        {% if finding.evidence %}
+        <p><strong>Evidence:</strong> {{ finding.evidence }}</p>
+        {% endif %}
+        {% if finding.remediation %}
+        <p><strong>Remediation:</strong> {{ finding.remediation }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+    <h2>OWASP API Security Top 10 (2023) Reference</h2>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Category</th><th>CWE</th></tr>
+        </thead>
+        <tbody>
+            {% for cat_id, info in owasp_reference.items() %}
+            <tr>
+                <td>{{ cat_id }}</td>
+                <td>{{ info.name }}</td>
+                <td>{{ info.cwe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <footer>
+        Generated by SecureAPI Analyzer v1.0.0
+    </footer>
+</body>
+</html>
